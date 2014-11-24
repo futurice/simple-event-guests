@@ -1,6 +1,12 @@
 {{template "html-start.html" .}}
 <h1>{{len .events}} event(s)</h1>
 
+{{if .navData.user.Admin}}
+  <p>
+    <a href="/create_event" title="Create a new Event">+ Add Event</a>
+  </p>
+{{end}}
+
 <ul>
   {{range $i, $e := .events}}
     <li>

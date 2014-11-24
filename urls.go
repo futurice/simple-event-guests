@@ -25,7 +25,8 @@ var (
 	})
 
 	adminNavURLs []*navURL = addNavURLs(loggedInNavURLs, []*navURL{
-		&navURL{createEventURL, "Add Event", "Create a new Event"},
+		// nothing so far; /create_event was here, but moved that
+		// link from the top navigation to the event list page.
 	})
 )
 
