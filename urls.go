@@ -16,6 +16,7 @@ const (
 
 	addGuestURL    = "/add_guest"
 	deleteGuestURL = "/delete_guest"
+	editGuestURL   = "/edit_guest"
 )
 
 var (

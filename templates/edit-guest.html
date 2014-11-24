@@ -1,0 +1,27 @@
+{{template "html-start.html" .}}
+<h1>Edit guest</h1>
+
+<form method="post">
+  <table>
+    <tr>
+      <td><label for="name">Guest Name:</label></td>
+      <td>
+        <input id="name" type="text" name="name" value="{{.guest.Name}}">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="email">Guest Email:</label></td>
+      <td>
+        <input id="email" type="text" name="email" value="{{.guest.Email}}">
+      </td>
+    </tr>
+    <tr>
+      <td><label for="host_email">Host Email:</label></td>
+      <td><input id="host_email" type="text" name="host_email"
+        value="{{.guest.HostEmail}}"></td>
+    </tr>
+  </table>
+  <br>
+  <input type="submit" value="Save">
+</form>
+{{template "html-end.html"}}

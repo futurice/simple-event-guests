@@ -30,6 +30,7 @@
         <td>Email</td>
         <td>Host email</td>
         <td>Code</td>
+        <td>Edit</td>
         <td>Delete</td>
       </tr>
     </thead>
@@ -40,6 +41,13 @@
           <td>{{.Email}}</td>
           <td>{{.HostEmail}}</td>
           <td>{{.Code}}</td>
+          <td>
+            <form action="/edit_guest" method="get">
+              <input type="hidden" name="event_id" value="{{$.id}}">
+              <input type="hidden" name="guest_code" value="{{.Code}}">
+              <input type="submit" value="Edit">
+            </form>
+          </td>
           <td>
             <form action="/delete_guest" method="post"
                 onsubmit="return confirm('Delete {{.Name}} ({{.Email}})?');">
