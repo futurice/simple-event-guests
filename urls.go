@@ -6,10 +6,13 @@ type navURL struct {
 }
 
 const (
-	homepageURL    = "/"
+	homepageURL = "/"
+
 	createEventURL = "/create_event"
 	eventListURL   = "/events"
 	eventDetailURL = "/event"
+
+	addGuestURL = "/add_guest"
 )
 
 var (

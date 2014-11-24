@@ -10,7 +10,8 @@ import (
 )
 
 type eventT struct {
-	Name string
+	Name   string
+	Guests []guestT
 }
 
 const (
@@ -51,7 +52,7 @@ func createEventPOSTHandler(w http.ResponseWriter, r *http.Request) *appError {
 		msg := "New event name must not be empty"
 		return &appError{errors.New(msg), msg, http.StatusBadRequest}
 	}
-	event := &eventT{name}
+	event := &eventT{Name: name}
 
 	c := appengine.NewContext(r)
 	key := datastore.NewIncompleteKey(c, eventKind, nil)
@@ -114,5 +115,6 @@ func eventDetailHandler(w http.ResponseWriter, r *http.Request) *appError {
 	return execNavTempl(r, w, "event-detail.html", map[string]interface{}{
 		"title": event.Name,
 		"event": event,
+		"id":    idInt,
 	})
 }

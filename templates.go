@@ -9,7 +9,8 @@ import (
 	"net/http"
 )
 
-var appTempl *template.Template = template.Must(template.ParseGlob("templates/*"))
+// don't load files starting dot (e.g. .file.html.swp)
+var appTempl *template.Template = template.Must(template.ParseGlob("templates/[^\\.]*"))
 
 // Executes the named template from appTempl on the Writer
 func execTempl(w io.Writer, name string, data interface{}) *appError {

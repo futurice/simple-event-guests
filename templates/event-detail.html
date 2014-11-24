@@ -1,3 +1,32 @@
 {{template "html-start.html" .}}
 <h1>{{.event.Name}}</h1>
+
+<h2>{{len .event.Guests}} guest(s)</h2>
+
+{{if .navData.user}}
+  <p>
+    <a href="/add_guest?event_id={{.id}}">+ Add a guest</a>
+  </p>
+{{end}}
+
+{{if len .event.Guests}}
+  <table>
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Host email</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .event.Guests}}
+        <tr>
+          <td>{{.Name}}</td>
+          <td>{{.Email}}</td>
+          <td>{{.HostEmail}}</td>
+        </tr>
+      {{end}}
+    </tbody>
+  </table>
+{{end}}
 {{template "html-end.html"}}
