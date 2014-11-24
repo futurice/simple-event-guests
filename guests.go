@@ -151,11 +151,16 @@ func deleteGuestHandler(w http.ResponseWriter, r *http.Request) *appError {
 			return err
 		}
 
-		newGuests := []guestT{}
+		newGuests, found := []guestT{}, false
 		for _, guest := range event.Guests {
 			if guest.Code != guestCode {
 				newGuests = append(newGuests, guest)
+			} else {
+				found = true
 			}
+		}
+		if !found {
+			return datastore.ErrNoSuchEntity
 		}
 		event.Guests = newGuests
 
