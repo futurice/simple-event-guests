@@ -7,7 +7,7 @@
     {{end}}
     <li>
       {{if .user}}
-        {{.user.String}} <a href="{{.logoutURL}}">Logout</a>
+        {{.user.Email}} <a href="{{.logoutURL}}">Logout</a>
       {{else}}
         <a href="{{.loginURL}}">Login</a>
       {{end}}
