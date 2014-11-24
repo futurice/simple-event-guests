@@ -43,11 +43,20 @@ func execNavTempl(r *http.Request, w io.Writer, name string,
 			http.StatusInternalServerError}
 	}
 
+	u := user.Current(c)
+	navURLs := publicNavURLs
+	if u != nil {
+		navURLs = loggedInNavURLs
+		if u.Admin {
+			navURLs = adminNavURLs
+		}
+	}
+
 	data["navData"] = map[string]interface{}{
 		"navURLs":   navURLs,
 		"loginURL":  loginURL,
 		"logoutURL": logoutURL,
-		"user":      user.Current(c),
+		"user":      u,
 	}
 	return execTempl(w, name, data)
 }

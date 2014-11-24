@@ -6,9 +6,30 @@ type navURL struct {
 }
 
 const (
-	homepageURL = "/"
+	homepageURL    = "/"
+	eventListURL   = "/events"
+	eventDetailURL = "/event"
+	createEventURL = "/create_event"
 )
 
-var navURLs []*navURL = []*navURL{
-	&navURL{homepageURL, "Homepage", "Home Page"},
+var (
+	publicNavURLs []*navURL = []*navURL{
+		&navURL{"/", "Home", ""},
+	}
+
+	loggedInNavURLs []*navURL = addNavURLs(publicNavURLs, []*navURL{
+		&navURL{eventListURL, "Events", "List all events"},
+	})
+
+	adminNavURLs []*navURL = addNavURLs(loggedInNavURLs, []*navURL{
+		&navURL{createEventURL, "Add Event", "Create a new Event"},
+	})
+)
+
+// Make a new slice, append base and extra to it, and return it.
+func addNavURLs(base, extra []*navURL) []*navURL {
+	result := []*navURL{}
+	result = append(result, base...)
+	result = append(result, extra...)
+	return result
 }
