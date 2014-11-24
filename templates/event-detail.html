@@ -30,6 +30,7 @@
         <td>Email</td>
         <td>Host email</td>
         <td>Code</td>
+        <td>Delete</td>
       </tr>
     </thead>
     <tbody>
@@ -39,6 +40,14 @@
           <td>{{.Email}}</td>
           <td>{{.HostEmail}}</td>
           <td>{{.Code}}</td>
+          <td>
+            <form action="/delete_guest" method="post"
+                onsubmit="return confirm('Delete {{.Name}} ({{.Email}})?');">
+              <input type="hidden" name="event_id" value="{{$.id}}">
+              <input type="hidden" name="guest_code" value="{{.Code}}">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
         </tr>
       {{end}}
     </tbody>

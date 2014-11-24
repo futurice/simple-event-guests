@@ -14,7 +14,8 @@ const (
 	editEventURL   = "/edit_event"
 	deleteEventURL = "/delete_event"
 
-	addGuestURL = "/add_guest"
+	addGuestURL    = "/add_guest"
+	deleteGuestURL = "/delete_guest"
 )
 
 var (

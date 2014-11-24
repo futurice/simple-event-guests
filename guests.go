@@ -28,6 +28,7 @@ const (
 
 func init() {
 	http.Handle(addGuestURL, appHandler(addGuestHandler))
+	http.Handle(deleteGuestURL, appHandler(deleteGuestHandler))
 }
 
 func init() {
@@ -96,9 +97,9 @@ func addGuestPOSTHandler(w http.ResponseWriter, r *http.Request) *appError {
 	}
 
 	c := appengine.NewContext(r)
-	event := &eventT{}
 	key := datastore.NewKey(c, eventKind, "", evIdInt, nil)
 	err = datastore.RunInTransaction(c, func(c appengine.Context) error {
+		event := &eventT{}
 		if err := datastore.Get(c, key, event); err != nil {
 			return err
 		}
@@ -123,6 +124,48 @@ func addGuestPOSTHandler(w http.ResponseWriter, r *http.Request) *appError {
 	}
 	if err != nil {
 		return &appError{err, "Error adding guest",
+			http.StatusInternalServerError}
+	}
+
+	http.Redirect(w, r, eventDetailURL+"?id="+evIdStr, http.StatusFound)
+	return nil
+}
+
+func deleteGuestHandler(w http.ResponseWriter, r *http.Request) *appError {
+	c := appengine.NewContext(r)
+	if user.Current(c) == nil {
+		msg := "Forbidden"
+		return &appError{errors.New(msg), msg, http.StatusForbidden}
+	}
+
+	evIdStr, guestCode := r.FormValue("event_id"), r.FormValue("guest_code")
+	evId, err := strconv.ParseInt(evIdStr, 10, 64)
+	if err != nil {
+		return &appError{err, "Invalid ID", http.StatusBadRequest}
+	}
+	key := datastore.NewKey(c, eventKind, "", evId, nil)
+	err = datastore.RunInTransaction(c, func(c appengine.Context) error {
+		event := &eventT{}
+		if err := datastore.Get(c, key, event); err != nil {
+			return err
+		}
+
+		newGuests := []guestT{}
+		for _, guest := range event.Guests {
+			if guest.Code != guestCode {
+				newGuests = append(newGuests, guest)
+			}
+		}
+		event.Guests = newGuests
+
+		_, err = datastore.Put(c, key, event)
+		return err
+	}, nil)
+	if err == datastore.ErrNoSuchEntity {
+		return &appError{err, "Not found", http.StatusNotFound}
+	}
+	if err != nil {
+		return &appError{err, "Error removing guest",
 			http.StatusInternalServerError}
 	}
 
