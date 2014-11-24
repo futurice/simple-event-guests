@@ -1,0 +1,16 @@
+<nav>
+  <ul>
+    {{range $idx, $ := .navURLs}}
+      <li>
+        <a href="{{.URL}}" title="{{.Tooltip}}">{{.Text}}</a>
+      </li>
+    {{end}}
+    <li>
+      {{if .user}}
+        {{.user.String}} <a href="{{.logoutURL}}">Logout</a>
+      {{else}}
+        <a href="{{.loginURL}}">Login</a>
+      {{end}}
+    </li>
+  </ul>
+</nav>

@@ -1,7 +1,6 @@
 package mypkg
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -10,6 +9,5 @@ func init() {
 }
 
 func homepageHandler(w http.ResponseWriter, r *http.Request) *appError {
-	fmt.Fprint(w, "Hello world!")
-	return nil
+	return execNavTempl(r, w, "homepage.html", map[string]interface{}{})
 }
