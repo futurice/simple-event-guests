@@ -21,10 +21,14 @@ func execTempl(w io.Writer, name string, data interface{}) *appError {
 }
 
 // Execute a ‘navigation template’.
-// Adds "navData" to the caller's map, modifying it, then calls execTempl.
+// Adds "navData" to the caller's map, modifying it,
+// (or to a new empty map, if ‘data’ is nil), then calls execTempl.
 // Returns an error if the map already contains the "navData" key.
 func execNavTempl(r *http.Request, w io.Writer, name string,
 	data map[string]interface{}) *appError {
+	if data == nil {
+		data = map[string]interface{}{}
+	}
 	if _, ok := data["navData"]; ok {
 		msg := "navData already present in template map"
 		return &appError{errors.New(msg), msg,

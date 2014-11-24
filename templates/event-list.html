@@ -1,0 +1,12 @@
+{{template "html-start.html" .}}
+<h1>{{len .events}} event(s)</h1>
+
+<ul>
+  {{range $i, $e := .events}}
+    <li>
+      <a href="/event?id={{with index $.keys $i}}{{.IntID}}{{end}}"
+        >{{.Name}}</a>
+    </li>
+  {{end}}
+</ul>
+{{template "html-end.html"}}

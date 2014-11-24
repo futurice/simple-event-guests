@@ -7,9 +7,9 @@ type navURL struct {
 
 const (
 	homepageURL    = "/"
+	createEventURL = "/create_event"
 	eventListURL   = "/events"
 	eventDetailURL = "/event"
-	createEventURL = "/create_event"
 )
 
 var (

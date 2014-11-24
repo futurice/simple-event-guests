@@ -15,5 +15,5 @@ func rootHandler(w http.ResponseWriter, r *http.Request) *appError {
 			fmt.Errorf("URL not found: ‘%v’", r.RequestURI),
 			"Not Found", http.StatusNotFound}
 	}
-	return execNavTempl(r, w, "homepage.html", map[string]interface{}{})
+	return execNavTempl(r, w, "homepage.html", nil)
 }
