@@ -3,23 +3,35 @@
 
 {{if .navData.user.Admin}}
   <p>
-    <a href="/edit_event?id={{.id}}">Edit event</a>
-  </p>
+  <a href="/edit_event?id={{.id}}">Edit event</a>
+
   <p>
-    <form action="/delete_event" method="post"
-        onsubmit="return confirm('Delete this event and all guests?')">
-      <input type="hidden" name="id" value="{{.id}}">
-      <input type="submit" value="Delete event">
-    </form>
-  </p>
+  <form action="/delete_event" method="post"
+      onsubmit="return confirm('Delete this event and all guests?')">
+    <input type="hidden" name="id" value="{{.id}}">
+    <input type="submit" value="Delete event">
+  </form>
 {{end}}
 
-<h2>{{len .event.Guests}} guest(s)</h2>
+<h2>
+  {{if .showAllGuests}}
+    Showing all {{len .event.Guests}} guest(s)
+  {{else}}
+    Showing only guests invited by {{.navData.user.Email}}
+    ({{len .event.Guests}} out of {{.totalGuests}} total)
+  {{end}}
+</h2>
+
+<p>
+{{if .showAllGuests}}
+  <a href="/event?id={{.id}}">Show only my guests</a>
+{{else}}
+  <a href="/event?id={{.id}}&show_all_guests=true">Show all guests</a>
+{{end}}
 
 {{if .navData.user}}
   <p>
-    <a href="/add_guest?event_id={{.id}}">+ Add a guest</a>
-  </p>
+  <a href="/add_guest?event_id={{.id}}">+ Add a guest</a>
 {{end}}
 
 {{if len .event.Guests}}

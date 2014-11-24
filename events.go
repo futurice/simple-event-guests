@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type eventT struct {
@@ -90,15 +91,25 @@ func eventListHandler(w http.ResponseWriter, r *http.Request) *appError {
 
 func eventDetailHandler(w http.ResponseWriter, r *http.Request) *appError {
 	c := appengine.NewContext(r)
-	if user.Current(c) == nil {
+	u := user.Current(c)
+	if u == nil {
 		msg := "Forbidden"
 		return &appError{errors.New(msg), msg, http.StatusForbidden}
 	}
 
-	idStr := r.FormValue("id")
+	idStr, showAllStr := r.FormValue("id"), r.FormValue("show_all_guests")
 	idInt, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
 		return &appError{err, "Invalid ID", http.StatusBadRequest}
+	}
+	// show all guests, or only those invited by the current user?
+	showAll := false
+	if len(showAllStr) > 0 {
+		var err error
+		if showAll, err = strconv.ParseBool(showAllStr); err != nil {
+			return &appError{err, "Invalid show_all_guests value",
+				http.StatusBadRequest}
+		}
 	}
 
 	event := &eventT{}
@@ -114,10 +125,23 @@ func eventDetailHandler(w http.ResponseWriter, r *http.Request) *appError {
 			http.StatusInternalServerError}
 	}
 
+	totalGuests := len(event.Guests)
+	if !showAll {
+		myGuests, myEmail := []guestT{}, strings.ToLower(u.Email)
+		for i := range event.Guests {
+			if strings.ToLower(event.Guests[i].HostEmail) == myEmail {
+				myGuests = append(myGuests, event.Guests[i])
+			}
+		}
+		event.Guests = myGuests
+	}
+
 	return execNavTempl(r, w, "event-detail.html", map[string]interface{}{
-		"title": event.Name,
-		"event": event,
-		"id":    idInt,
+		"title":         event.Name,
+		"event":         event,
+		"id":            idInt,
+		"totalGuests":   totalGuests,
+		"showAllGuests": showAll,
 	})
 }
 
