@@ -37,12 +37,12 @@ func execNavTempl(r *http.Request, w io.Writer, name string,
 	}
 
 	c := appengine.NewContext(r)
-	loginURL, err := user.LoginURL(c, r.RequestURI)
+	loginURL, err := user.LoginURL(c, "/")
 	if err != nil {
 		return &appError{err, "Error getting login URL",
 			http.StatusInternalServerError}
 	}
-	logoutURL, err := user.LogoutURL(c, r.RequestURI)
+	logoutURL, err := user.LogoutURL(c, "/")
 	if err != nil {
 		return &appError{err, "Error getting logout URL",
 			http.StatusInternalServerError}
