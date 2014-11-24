@@ -2,4 +2,24 @@ Invite Guests to Events and record their Responses
 
 Used by Futurice for the Customer Christmas Trees event.
 
-Google App Engine app.
+Google App Engine Go app.
+
+
+Developing:
+
+go fmt
+
+
+Running locally:
+
+go_appengine/goapp serve
+http://localhost:8080/
+The dev server admin site is:
+http://localhost:8000/
+
+
+Deploying:
+
+go_appengine/appcfg.py update --no_cookies -e «YOUR_EMAIL» .
+To override the App ID and Version from app.yaml, add the options:
+-A futurice-christmas-trees -V 1
