@@ -1,0 +1,29 @@
+{{template "html-start.html" .}}
+<h1>{{.event.Name}}</h1>
+
+<p>
+Hello {{.guest.Name}} ({{.guest.Email}}), you're invited.
+
+<p>
+Are you coming?
+
+<p>
+<form method="post">
+  <input id="yes" type="radio" name="response" value="true"
+    {{if and .guest.HasResponded .guest.Response}}checked{{end}}>
+  <label for="yes">Yes</label>
+  <br>
+
+  <input id="no" type="radio" name="response" value="false"
+    {{if not .guest.Response | and .guest.HasResponded}}checked{{end}}>
+  <label for="no">No</label>
+  <br>
+
+  <input type="submit" value="Respond">
+</form>
+
+{{if .saved}}
+<p>
+Your response has been saved!
+{{end}}
+{{template "html-end.html"}}

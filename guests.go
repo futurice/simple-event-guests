@@ -13,9 +13,11 @@ import (
 )
 
 type guestT struct {
-	Name, Email, HostEmail string
 	// auto-generated, uniquely identifies a guest in an event
 	Code string
+
+	Name, Email, HostEmail string
+	HasResponded, Response bool
 }
 
 const (
@@ -178,6 +180,7 @@ func deleteGuestHandler(w http.ResponseWriter, r *http.Request) *appError {
 	http.Redirect(w, r, eventDetailURL+"?id="+evIdStr, http.StatusFound)
 	return nil
 }
+
 func editGuestHandler(w http.ResponseWriter, r *http.Request) *appError {
 	c := appengine.NewContext(r)
 	if user.Current(c) == nil {

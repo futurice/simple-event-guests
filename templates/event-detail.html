@@ -30,6 +30,7 @@
         <td>Email</td>
         <td>Host email</td>
         <td>Code</td>
+        <td>Response</td>
         <td>Edit</td>
         <td>Delete</td>
       </tr>
@@ -40,7 +41,21 @@
           <td>{{.Name}}</td>
           <td>{{.Email}}</td>
           <td>{{.HostEmail}}</td>
-          <td>{{.Code}}</td>
+          <td>
+            <a href="/respond?event_id={{$.id}}&guest_code={{.Code}}"
+              >{{.Code}}</a>
+          </td>
+          <td>
+            {{if .HasResponded}}
+              {{if .Response}}
+                <span title="{{.Name}} has confirmed">✓</span>
+              {{else}}
+                <span title="{{.Name}} has declined">no</span>
+              {{end}}
+            {{else}}
+              <span title="{{.Name}} has not responded">—</span>
+            {{end}}
+          </td>
           <td>
             <form action="/edit_guest" method="get">
               <input type="hidden" name="event_id" value="{{$.id}}">
