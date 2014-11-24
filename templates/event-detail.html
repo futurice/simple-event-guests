@@ -5,6 +5,13 @@
   <p>
     <a href="/edit_event?id={{.id}}">Edit event</a>
   </p>
+  <p>
+    <form action="/delete_event" method="post"
+        onsubmit="return confirm('Delete this event and all guests?')">
+      <input type="hidden" name="id" value="{{.id}}">
+      <input type="submit" value="Delete event">
+    </form>
+  </p>
 {{end}}
 
 <h2>{{len .event.Guests}} guest(s)</h2>

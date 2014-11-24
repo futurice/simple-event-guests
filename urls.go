@@ -12,6 +12,7 @@ const (
 	eventListURL   = "/events"
 	eventDetailURL = "/event"
 	editEventURL   = "/edit_event"
+	deleteEventURL = "/delete_event"
 
 	addGuestURL = "/add_guest"
 )

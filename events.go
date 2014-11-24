@@ -23,6 +23,7 @@ func init() {
 	http.Handle(eventListURL, appHandler(eventListHandler))
 	http.Handle(eventDetailURL, appHandler(eventDetailHandler))
 	http.Handle(editEventURL, appHandler(editEventHandler))
+	http.Handle(deleteEventURL, appHandler(deleteEventHandler))
 }
 
 func createEventHandler(w http.ResponseWriter, r *http.Request) *appError {
@@ -201,5 +202,33 @@ func editEventPOSTHandler(w http.ResponseWriter, r *http.Request) *appError {
 	}
 
 	http.Redirect(w, r, eventDetailURL+"?id="+idStr, http.StatusFound)
+	return nil
+}
+
+func deleteEventHandler(w http.ResponseWriter, r *http.Request) *appError {
+	if !user.IsAdmin(appengine.NewContext(r)) {
+		msg := "Forbidden"
+		return &appError{errors.New(msg), msg, http.StatusForbidden}
+	}
+
+	idStr := r.FormValue("id")
+	idInt, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return &appError{err, "Invalid ID", http.StatusBadRequest}
+	}
+	c := appengine.NewContext(r)
+	key := datastore.NewKey(c, eventKind, "", idInt, nil)
+	err = datastore.RunInTransaction(c, func(c appengine.Context) error {
+		return datastore.Delete(c, key)
+	}, nil)
+	if err == datastore.ErrNoSuchEntity {
+		return &appError{err, "Not found", http.StatusNotFound}
+	}
+	if err != nil {
+		return &appError{err, "Error updating event",
+			http.StatusInternalServerError}
+	}
+
+	http.Redirect(w, r, eventListURL, http.StatusFound)
 	return nil
 }
