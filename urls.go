@@ -11,6 +11,7 @@ const (
 	createEventURL = "/create_event"
 	eventListURL   = "/events"
 	eventDetailURL = "/event"
+	editEventURL   = "/edit_event"
 
 	addGuestURL = "/add_guest"
 )
@@ -25,8 +26,8 @@ var (
 	})
 
 	adminNavURLs []*navURL = addNavURLs(loggedInNavURLs, []*navURL{
-		// nothing so far; /create_event was here, but moved that
-		// link from the top navigation to the event list page.
+	// nothing so far; /create_event was here, but moved that
+	// link from the top navigation to the event list page.
 	})
 )
 

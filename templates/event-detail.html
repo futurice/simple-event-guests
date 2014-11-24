@@ -1,6 +1,12 @@
 {{template "html-start.html" .}}
 <h1>{{.event.Name}}</h1>
 
+{{if .navData.user.Admin}}
+  <p>
+    <a href="/edit_event?id={{.id}}">Edit event</a>
+  </p>
+{{end}}
+
 <h2>{{len .event.Guests}} guest(s)</h2>
 
 {{if .navData.user}}

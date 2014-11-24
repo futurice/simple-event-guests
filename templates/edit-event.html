@@ -1,0 +1,10 @@
+{{template "html-start.html" .}}
+<h1>Edit event</h1>
+
+<form method="post">
+  <label for="name">Name:</label>
+  <input id="name" type="text" name="name" value="{{.event.Name}}">
+  <br>
+  <input type="submit" value="Save">
+</form>
+{{template "html-end.html"}}
